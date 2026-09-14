@@ -8,7 +8,10 @@ import styled from 'styled-components'
 import { Picker } from 'emoji-mart'
 import { updateGoal as updateGoalApi } from '../../../api/lib'
 import { Goal } from '../../../api/types'
-import { selectGoalsMap, updateGoal as updateGoalRedux } from '../../../store/goalsSlice'
+import {
+  selectGoalsMap,
+  updateGoal as updateGoalRedux,
+} from '../../../store/goalsSlice'
 import { useAppDispatch, useAppSelector } from '../../../store/hooks'
 import DatePicker from '../../components/DatePicker'
 import { Theme } from '../../components/Theme'
@@ -92,17 +95,18 @@ export function GoalManager(props: Props) {
     }
   }
 
-  const pickIconOnChange = (emoji: any) => {
+  const pickEmojiOnClick = (emoji: any) => {
     const nextIcon = emoji.native
+
     setIcon(nextIcon)
     setIsEmojiPickerOpen(false)
 
     const updatedGoal: Goal = {
       ...props.goal,
+      icon: emoji.native ?? props.goal.icon,
       name: name ?? props.goal.name,
       targetDate: targetDate ?? props.goal.targetDate,
       targetAmount: targetAmount ?? props.goal.targetAmount,
-      icon: nextIcon,
     }
 
     dispatch(updateGoalRedux(updatedGoal))
@@ -119,14 +123,16 @@ export function GoalManager(props: Props) {
             {icon}
           </GoalIcon>
         ) : (
-          <AddIconButton onClick={() => setIsEmojiPickerOpen(!isEmojiPickerOpen)}>
+          <AddIconButton
+            onClick={() => setIsEmojiPickerOpen(!isEmojiPickerOpen)}
+          >
             Add Icon
           </AddIconButton>
         )}
 
         {isEmojiPickerOpen && (
           <EmojiPickerContainer>
-            <Picker onSelect={pickIconOnChange} />
+            <Picker onSelect={pickEmojiOnClick} />
           </EmojiPickerContainer>
         )}
       </GoalIconContainer>
