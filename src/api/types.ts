@@ -18,8 +18,10 @@ export interface Application {
 }
 
 export interface Goal {
+
   id: string
   name: string
+  icon: string | null
   targetAmount: number
   balance: number
   targetDate: Date
